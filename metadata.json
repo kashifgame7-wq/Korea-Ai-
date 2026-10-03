@@ -1,0 +1,7 @@
+{
+  "name": "Korea AI - Chat & Fast Images",
+  "description": "Smart conversational AI and ultra-fast creative image generator with custom styles, prompt enhancement, and session history.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+

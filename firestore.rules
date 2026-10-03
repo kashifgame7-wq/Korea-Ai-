@@ -1,0 +1,39 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper function to check if user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // Helper function to check if the user is the owner of the document
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // User profile document
+    match /users/{userId} {
+      allow read, write: if isOwner(userId);
+
+      // User chat sessions subcollection
+      match /sessions/{sessionId} {
+        allow read, write: if isOwner(userId);
+
+        // Subcollection messages if nested
+        match /messages/{messageId} {
+          allow read, write: if isOwner(userId);
+        }
+      }
+
+      // User favorites subcollection
+      match /favorites/{favoriteId} {
+        allow read, write: if isOwner(userId);
+      }
+    }
+
+    // Default deny all other collections
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
